@@ -55,6 +55,9 @@
             button1 = new Button();
             saveFileDialog1 = new SaveFileDialog();
             button2 = new Button();
+            openBracket = new PictureBox();
+            closeBracket = new PictureBox();
+            button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)seven).BeginInit();
             ((System.ComponentModel.ISupportInitialize)eight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nine).BeginInit();
@@ -75,6 +78,8 @@
             ((System.ComponentModel.ISupportInitialize)ce).BeginInit();
             ((System.ComponentModel.ISupportInitialize)square).BeginInit();
             ((System.ComponentModel.ISupportInitialize)minus).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)openBracket).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)closeBracket).BeginInit();
             SuspendLayout();
             // 
             // seven
@@ -256,7 +261,7 @@
             // cancel
             // 
             cancel.Image = (Image)resources.GetObject("cancel.Image");
-            cancel.Location = new Point(213, 189);
+            cancel.Location = new Point(310, 117);
             cancel.Name = "cancel";
             cancel.Size = new Size(79, 62);
             cancel.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -267,7 +272,7 @@
             // ce
             // 
             ce.Image = (Image)resources.GetObject("ce.Image");
-            ce.Location = new Point(119, 189);
+            ce.Location = new Point(213, 117);
             ce.Name = "ce";
             ce.Size = new Size(79, 62);
             ce.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -289,7 +294,7 @@
             // textBox1
             // 
             textBox1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            textBox1.Location = new Point(24, 126);
+            textBox1.Location = new Point(24, 73);
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
             textBox1.Size = new Size(365, 38);
@@ -347,11 +352,49 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // openBracket
+            // 
+            openBracket.Image = (Image)resources.GetObject("openBracket.Image");
+            openBracket.Location = new Point(119, 189);
+            openBracket.Name = "openBracket";
+            openBracket.Size = new Size(79, 62);
+            openBracket.SizeMode = PictureBoxSizeMode.StretchImage;
+            openBracket.TabIndex = 25;
+            openBracket.TabStop = false;
+            openBracket.Visible = false;
+            openBracket.Click += openBracket_Click;
+            // 
+            // closeBracket
+            // 
+            closeBracket.Image = (Image)resources.GetObject("closeBracket.Image");
+            closeBracket.Location = new Point(213, 189);
+            closeBracket.Name = "closeBracket";
+            closeBracket.Size = new Size(79, 62);
+            closeBracket.SizeMode = PictureBoxSizeMode.StretchImage;
+            closeBracket.TabIndex = 26;
+            closeBracket.TabStop = false;
+            closeBracket.Visible = false;
+            closeBracket.Click += closeBracket_Click;
+            // 
+            // button3
+            // 
+            button3.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            button3.Location = new Point(24, 12);
+            button3.Name = "button3";
+            button3.Size = new Size(136, 52);
+            button3.TabIndex = 27;
+            button3.Text = "Standart";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
             // Calculator
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(697, 592);
+            Controls.Add(button3);
+            Controls.Add(closeBracket);
+            Controls.Add(openBracket);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(minus);
@@ -401,6 +444,8 @@
             ((System.ComponentModel.ISupportInitialize)ce).EndInit();
             ((System.ComponentModel.ISupportInitialize)square).EndInit();
             ((System.ComponentModel.ISupportInitialize)minus).EndInit();
+            ((System.ComponentModel.ISupportInitialize)openBracket).EndInit();
+            ((System.ComponentModel.ISupportInitialize)closeBracket).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -433,5 +478,8 @@
         private Button button1;
         private SaveFileDialog saveFileDialog1;
         private Button button2;
+        private PictureBox openBracket;
+        private PictureBox closeBracket;
+        private Button button3;
     }
 }

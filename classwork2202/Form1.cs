@@ -1,93 +1,78 @@
+﻿using System.Data;
 using System.Globalization;
+using System.Text;
 namespace classwork2202
 {
     public partial class Calculator : Form
     {
+        private bool isScientific = false;
         public Calculator()
         {
             InitializeComponent();
         }
 
+        private void Number(string num)
+        {
+            if (textBox1.Text == "0")
+                textBox1.Text = num;
+            else if (textBox1.Text.Length > 0 && textBox1.Text.Last() == ')')
+                textBox1.Text += "*" + num;
+            else textBox1.Text += num;
+        }
+
         private void zero_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "0";
+            Number("0");
         }
 
         private void one_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "1";
-            else
-                textBox1.Text = "1";
+            Number("1");
         }
 
         private void two_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "2";
-            else
-                textBox1.Text = "2";
+            Number("2");
         }
 
         private void three_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "3";
-            else
-                textBox1.Text = "3";
+            Number("3");
         }
 
         private void four_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "4";
-            else
-                textBox1.Text = "4";
+            Number("4");
         }
 
         private void five_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "5";
-            else
-                textBox1.Text = "5";
+            Number("5");
         }
 
         private void six_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "6";
-            else
-                textBox1.Text = "6";
+            Number("6");
         }
 
         private void seven_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "7";
-            else
-                textBox1.Text = "7";
+            Number("7");
         }
 
         private void eight_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "8";
-            else
-                textBox1.Text = "8";
+            Number("8");
         }
 
         private void nine_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "0")
-                textBox1.Text += "9";
-            else
-                textBox1.Text = "9";
+            Number("9");
         }
         private void Operation(char op)
         {
-            equal_Click(null, null);
+            if (!isScientific)
+                equal_Click(null, null);
             textBox1.Text += op;
         }
 
@@ -114,47 +99,63 @@ namespace classwork2202
         private void equal_Click(object sender, EventArgs e)
         {
             string expression = textBox1.Text;
-            char[] operators = { '+', '-', '*', '/' };
-            int operatorIndex = -1;
-            char op = ' ';
-
-            for (int i = 1; i < expression.Length; i++)
+            if (isScientific)
             {
-                if (operators.Contains(expression[i]))
+                try
                 {
-                    operatorIndex = i;
-                    op = expression[i];
-                    break;
+                    var result = new DataTable().Compute(expression, null);
+                    textBox1.Text = result.ToString();
+                    richTextBox1.AppendText($"{expression} = {result}\n");
+                }
+                catch
+                {
+                    MessageBox.Show("Error in expression!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            if (operatorIndex == -1) return;
-
-            string left = "";
-            for (int i = 0; i < operatorIndex; i++)
-                left += expression[i];
-
-            string right = "";
-            for (int i = operatorIndex + 1; i < expression.Length; i++)
-                right += expression[i];
-
-            if (double.TryParse(left, NumberStyles.Any, CultureInfo.InvariantCulture, out double num1) &&
-                double.TryParse(right, NumberStyles.Any, CultureInfo.InvariantCulture, out double num2))
+            else
             {
-                double result = 0;
-                if (op == '+') result = num1 + num2;
-                if (op == '-') result = num1 - num2;
-                if (op == '*') result = num1 * num2;
-                if (op == '/')
+                char[] operators = { '+', '-', '*', '/' };
+                int operatorIndex = -1;
+                char op = ' ';
+
+                for (int i = 1; i < expression.Length; i++)
                 {
-                    if (num2 != 0) result = num1 / num2;
-                    else
+                    if (operators.Contains(expression[i]))
                     {
-                        MessageBox.Show("Division by zero!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        operatorIndex = i;
+                        op = expression[i];
+                        break;
                     }
                 }
-                textBox1.Text = result.ToString().Replace(',', '.');
-                richTextBox1.Text += $"{expression}={result.ToString().Replace(',', '.')}\n";
+                if (operatorIndex == -1) return;
+
+                string left = "";
+                for (int i = 0; i < operatorIndex; i++)
+                    left += expression[i];
+
+                string right = "";
+                for (int i = operatorIndex + 1; i < expression.Length; i++)
+                    right += expression[i];
+
+                if (double.TryParse(left, NumberStyles.Any, CultureInfo.InvariantCulture, out double num1) &&
+                    double.TryParse(right, NumberStyles.Any, CultureInfo.InvariantCulture, out double num2))
+                {
+                    double result = 0;
+                    if (op == '+') result = num1 + num2;
+                    if (op == '-') result = num1 - num2;
+                    if (op == '*') result = num1 * num2;
+                    if (op == '/')
+                    {
+                        if (num2 != 0) result = num1 / num2;
+                        else
+                        {
+                            MessageBox.Show("Division by zero!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                    textBox1.Text = result.ToString().Replace(',', '.');
+                    richTextBox1.AppendText($"{expression}={result.ToString().Replace(',', '.')}\n");
+                }
             }
         }
 
@@ -174,10 +175,11 @@ namespace classwork2202
 
         private void square_Click(object sender, EventArgs e)
         {
-            if (double.TryParse(textBox1.Text, out double num))
+            if (double.TryParse(textBox1.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double num))
             {
                 double result = num * num;
-                textBox1.Text = result.ToString();
+                textBox1.Text = result.ToString(CultureInfo.InvariantCulture);
+                richTextBox1.AppendText($"{num}²={result}\n");
             }
             else
                 MessageBox.Show("Error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -225,9 +227,49 @@ namespace classwork2202
                 return;
             }
 
-            if (double.TryParse(textBox1.Text, out double num))
+            if (double.TryParse(textBox1.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double num))
             {
-                textBox1.Text = (-num).ToString();
+                textBox1.Text = (-num).ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            isScientific = !isScientific;
+
+            openBracket.Visible = isScientific;
+            closeBracket.Visible = isScientific;
+
+            button3.Text = isScientific ? "Standard" : "Scientific";
+            textBox1.Text = "0";
+
+        }
+
+        private void openBracket_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text != "0" && char.IsDigit(textBox1.Text.Last()))
+            {
+                textBox1.Text += "*(";
+            }
+            else if (textBox1.Text == "0")
+            {
+                textBox1.Text = "(";
+            }
+            else
+            {
+                textBox1.Text += "(";
+            }
+        }
+
+        private void closeBracket_Click(object sender, EventArgs e)
+        {
+            int openBrackets = textBox1.Text.Count(c => c == '(');
+            int closeBrackets = textBox1.Text.Count(c => c == ')');
+
+            if (openBrackets <= closeBrackets) return;
+            if (textBox1.Text.Length > 0 && (char.IsDigit(textBox1.Text.Last()) || textBox1.Text.Last() == ')'))
+            {
+                textBox1.Text += ")";
             }
         }
     }
