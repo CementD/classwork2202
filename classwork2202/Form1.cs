@@ -73,6 +73,10 @@ namespace classwork2202
         {
             if (!isScientific)
                 equal_Click(null, null);
+            char lastChar = textBox1.Text.Last();
+
+            if (lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '/')
+                textBox1.Text = textBox1.Text.Remove(textBox1.Text.Length - 1);
             textBox1.Text += op;
         }
 
